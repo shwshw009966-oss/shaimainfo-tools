@@ -1,1 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شيماء للأدوات</title>
 
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#222;
+}
+header{
+  background:linear-gradient(135deg,#6c4cff,#8b5cf6);
+  color:white;
+  text-align:center;
+  padding:45px 20px;
+}
+header h1{margin:0 0 10px;font-size:32px}
+header p{margin:0;font-size:17px}
+
+.container{
+  max-width:1000px;
+  margin:30px auto;
+  padding:0 15px;
+}
+
+.tools{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:20px;
+}
+
+.tool{
+  background:white;
+  border-radius:18px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+}
+
+.tool h2{margin-top:0}
+.tool p{color:#666;line-height:1.7}
+
+button{
+  border:0;
+  background:#6c4cff;
+  color:white;
+  padding:12px 25px;
+  border-radius:10px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🛠️ شيماء للأدوات</h1>
+  <p>أدوات مجانية وسهلة الاستخدام</p>
+</header>
+
+<div class="container">
+
+  <div class="tools">
+
+    <div class="tool">
+      <h2>🔗 فحص الروابط</h2>
+      <p>أداة لفحص الروابط والتأكد من سلامتها قبل فتحها.</p>
+      <button onclick="alert('سنضيف أداة فحص الروابط هنا في الخطوة القادمة')">
+        فتح الأداة
+      </button>
+    </div>
+
+    <div class="tool">
+      <h2>📝 أدوات النصوص</h2>
+      <p>أدوات مجانية لمعالجة النصوص وتحويلها وتنسيقها.</p>
+      <button>قريبًا</button>
+    </div>
+
+    <div class="tool">
+      <h2>🔢 أدوات الحساب</h2>
+      <p>مجموعة من الأدوات والحاسبات المفيدة.</p>
+      <button>قريبًا</button>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  © 2026 شيماء للأدوات - جميع الحقوق محفوظة
+</footer>
+
+</body>
+</html>
