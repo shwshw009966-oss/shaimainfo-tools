@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>شيماء للأدوات - فحص الروابط</title>
+<title>شيماء للأدوات - أدوات مجانية</title>
 
-<meta name="description" content="أداة مجانية لفحص الروابط وتحليل بعض العلامات التي قد تشير إلى رابط مشبوه.">
+<meta name="description" content="شيماء للأدوات - أدوات مجانية لفحص الروابط وعد الكلمات والحروف.">
 
 <style>
 *{
@@ -48,6 +48,7 @@ background:white;
 padding:25px;
 border-radius:20px;
 box-shadow:0 5px 25px rgba(0,0,0,.08);
+margin-bottom:25px;
 }
 
 h2{
@@ -61,19 +62,31 @@ color:#666;
 line-height:1.8;
 }
 
-input{
+input,
+textarea{
 width:100%;
 padding:15px;
 border:1px solid #ddd;
 border-radius:12px;
 font-size:16px;
-margin:15px 0;
-direction:ltr;
-text-align:left;
 outline:none;
 }
 
-input:focus{
+input{
+margin:15px 0;
+direction:ltr;
+text-align:left;
+}
+
+textarea{
+min-height:180px;
+resize:vertical;
+font-family:Arial,Tahoma,sans-serif;
+direction:rtl;
+}
+
+input:focus,
+textarea:focus{
 border-color:#6c4cff;
 }
 
@@ -138,6 +151,29 @@ line-height:1.8;
 color:#555;
 }
 
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+margin-top:15px;
+}
+
+.stat{
+background:#eef2ff;
+padding:15px;
+border-radius:12px;
+text-align:center;
+}
+
+.stat div{
+margin-bottom:8px;
+}
+
+.stat strong{
+font-size:24px;
+color:#6c4cff;
+}
+
 footer{
 text-align:center;
 padding:30px;
@@ -146,6 +182,26 @@ color:#777;
 
 ul{
 padding-right:20px;
+}
+
+@media(max-width:500px){
+
+header h1{
+font-size:26px;
+}
+
+.box{
+padding:20px;
+}
+
+.buttons{
+flex-direction:column;
+}
+
+.stats{
+grid-template-columns:1fr 1fr;
+}
+
 }
 </style>
 </head>
@@ -156,9 +212,12 @@ padding-right:20px;
 
 <h1>🛡️ شيماء للأدوات</h1>
 
-<p>فحص الروابط قبل فتحها</p>
+<p>أدوات مجانية ومفيدة للجميع</p>
 
 </header>
+
+
+<!-- فاحص الروابط -->
 
 <div class="container">
 
@@ -201,7 +260,70 @@ autocomplete="off"
 
 </div>
 
+
+<!-- عداد الكلمات والحروف -->
+
+<div class="box">
+
+<h2>📝 عداد الكلمات والحروف</h2>
+
+<p class="description">
+اكتب أو الصق النص لمعرفة عدد الكلمات والحروف والأسطر.
+</p>
+
+<textarea
+id="textCounter"
+placeholder="اكتب أو الصق النص هنا..."
+></textarea>
+
+<div class="stats">
+
+<div class="stat">
+
+<div>🔤 الكلمات</div>
+
+<strong id="wordCount">0</strong>
+
 </div>
+
+<div class="stat">
+
+<div>🔠 الحروف</div>
+
+<strong id="charCount">0</strong>
+
+</div>
+
+<div class="stat">
+
+<div>📏 بدون مسافات</div>
+
+<strong id="charNoSpace">0</strong>
+
+</div>
+
+<div class="stat">
+
+<div>📄 الأسطر</div>
+
+<strong id="lineCount">0</strong>
+
+</div>
+
+</div>
+
+<button
+class="clear"
+onclick="clearCounter()"
+style="margin-top:15px;width:100%;"
+>
+🗑️ مسح النص
+</button>
+
+</div>
+
+</div>
+
 
 <footer>
 
@@ -209,14 +331,21 @@ autocomplete="off"
 
 </footer>
 
+
 <script>
+
+/* =========================
+   فاحص الروابط
+========================= */
 
 function scanURL(){
 
 const input=document.getElementById("urlInput");
+
 const result=document.getElementById("result");
 
 let value=input.value.trim();
+
 
 if(!value){
 
@@ -230,11 +359,16 @@ return;
 
 }
 
+
 if(!/^https?:\/\//i.test(value)){
+
 value="https://"+value;
+
 }
 
+
 let url;
+
 
 try{
 
@@ -253,13 +387,15 @@ return;
 
 }
 
+
 let warnings=[];
+
 let good=[];
 
 const hostname=url.hostname.toLowerCase();
 
 
-// HTTPS
+/* HTTPS */
 
 if(url.protocol==="https:"){
 
@@ -272,7 +408,7 @@ warnings.push("⚠️ الرابط لا يستخدم HTTPS.");
 }
 
 
-// IP address
+/* IP */
 
 const ipPattern=/^(\d{1,3}\.){3}\d{1,3}$/;
 
@@ -285,7 +421,7 @@ warnings.push(
 }
 
 
-// @ symbol
+/* @ */
 
 if(value.includes("@")){
 
@@ -296,7 +432,7 @@ warnings.push(
 }
 
 
-// Punycode
+/* Punycode */
 
 if(hostname.includes("xn--")){
 
@@ -307,7 +443,7 @@ warnings.push(
 }
 
 
-// كثيرة النطاقات الفرعية
+/* Subdomains */
 
 const parts=hostname.split(".");
 
@@ -320,7 +456,7 @@ warnings.push(
 }
 
 
-// كلمات مشبوهة
+/* كلمات مشبوهة */
 
 const suspiciousWords=[
 "login",
@@ -340,6 +476,7 @@ const suspiciousWords=[
 
 let foundWords=[];
 
+
 for(let word of suspiciousWords){
 
 if(hostname.includes(word)){
@@ -350,6 +487,7 @@ foundWords.push(word);
 
 }
 
+
 if(foundWords.length>=2){
 
 warnings.push(
@@ -359,7 +497,7 @@ warnings.push(
 }
 
 
-// طول الرابط
+/* طول الرابط */
 
 if(value.length>200){
 
@@ -370,7 +508,7 @@ warnings.push(
 }
 
 
-// رموز مشفرة
+/* رموز مشفرة */
 
 if(value.includes("%")){
 
@@ -381,7 +519,7 @@ warnings.push(
 }
 
 
-// شرطات كثيرة
+/* شرطات */
 
 const hyphens=(hostname.match(/-/g)||[]).length;
 
@@ -394,7 +532,7 @@ warnings.push(
 }
 
 
-// منفذ غير معتاد
+/* منفذ */
 
 if(
 url.port &&
@@ -409,21 +547,23 @@ warnings.push(
 }
 
 
-// حساب النتيجة
+/* النتيجة */
 
 let score=100;
 
 score-=warnings.length*15;
 
 if(score<0){
+
 score=0;
+
 }
 
 
-// تحديد الحالة
-
 let status="";
+
 let className="";
+
 
 if(warnings.length===0){
 
@@ -446,9 +586,8 @@ className="danger";
 }
 
 
-// الملاحظات
-
 let warningHTML="";
+
 
 if(warnings.length){
 
@@ -470,9 +609,8 @@ warningHTML=
 }
 
 
-// النقاط الجيدة
-
 let goodHTML="";
+
 
 if(good.length){
 
@@ -488,8 +626,6 @@ goodHTML+="</ul>";
 
 }
 
-
-// عرض النتيجة
 
 result.className=className;
 
@@ -514,7 +650,7 @@ warningHTML;
 }
 
 
-// زر المسح
+/* مسح فاحص الروابط */
 
 function clearScan(){
 
@@ -528,7 +664,81 @@ result.innerHTML="";
 
 }
 
+
+/* =========================
+   عداد الكلمات والحروف
+========================= */
+
+const textCounter=
+document.getElementById("textCounter");
+
+
+textCounter.addEventListener("input",function(){
+
+const text=this.value;
+
+
+const words=text.trim()
+?text.trim().split(/\s+/).length
+:0;
+
+
+const chars=text.length;
+
+
+const charsNoSpace=
+text.replace(/\s/g,"").length;
+
+
+const lines=text
+?text.split(/\n/).length
+:0;
+
+
+document.getElementById("wordCount")
+.textContent=words;
+
+
+document.getElementById("charCount")
+.textContent=chars;
+
+
+document.getElementById("charNoSpace")
+.textContent=charsNoSpace;
+
+
+document.getElementById("lineCount")
+.textContent=lines;
+
+});
+
+
+/* مسح عداد الكلمات */
+
+function clearCounter(){
+
+textCounter.value="";
+
+
+document.getElementById("wordCount")
+.textContent="0";
+
+
+document.getElementById("charCount")
+.textContent="0";
+
+
+document.getElementById("charNoSpace")
+.textContent="0";
+
+
+document.getElementById("lineCount")
+.textContent="0";
+
+}
+
 </script>
 
 </body>
+
 </html>
